@@ -27,6 +27,7 @@ WORKDIR /app
 
 # Copy all binaries from builder
 COPY --from=builder --chown=appuser:appgroup /app/bin/ /app/bin/
+COPY --from=builder --chown=appuser:appgroup /app/configs/ /app/configs/
 COPY --from=builder --chown=appuser:appgroup /app/script/entrypoint.sh /app/
 
 # add permissions
