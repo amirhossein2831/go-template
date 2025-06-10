@@ -10,11 +10,10 @@ services:
     environment:
       APP_NAME: first-app
       APP_ENV: development
-      MONGO_URI: mongodb://mongo:27017
     networks:
       - app-network
-#    ports:
-#      - "8080:8080"
+    ports:
+      - "8000:8000"
 
   second-app:
     container_name: second-app
