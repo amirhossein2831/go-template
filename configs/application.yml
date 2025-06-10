@@ -1,0 +1,7 @@
+# Server configuration
+server:
+  port: 8080
+
+# Database configuration
+database:
+  uri: "mongodb://localhost:27017"
