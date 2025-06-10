@@ -1,11 +1,10 @@
-// my-go-app/internal/database/mongo.go
 package database
 
 import (
 	"context"
 	"event-collector/internal/config"
+	"go.uber.org/fx"
 	"log"
-	"sync"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,60 +12,41 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-var (
-	instance *MongoDB  // *MongoDB	is the single-ton instance
-	once     sync.Once // sync.Once will ensure the initialization code is executed only once.
-)
-
 // MongoDB holds the client and implements the singleton logic.
 type MongoDB struct {
 	Client *mongo.Client
 }
 
-// GetMongo returns a thread-safe, singleton instance of our MongoDB client.
-func GetMongo(ctx context.Context) *MongoDB {
-	once.Do(func() {
-		client := connect(ctx)
-
-		instance = &MongoDB{Client: client}
-	})
-
-	return instance
-}
-
-func connect(ctx context.Context) *mongo.Client {
-	// This function will only be executed on the first call to GetInstance
-
-	appConfig := config.GetConfig()
-	mongoURI := appConfig.Database.URI
-
-	connectCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+// NewMongo returns a thread-safe, singleton instance of our MongoDB client.
+func NewMongo(cfg *config.Config, lc fx.Lifecycle) (*mongo.Client, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	client, err := mongo.Connect(connectCtx, options.Client().ApplyURI(mongoURI))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(cfg.Database.URI))
 	if err != nil {
 		log.Fatalf("FATAL: Failed to create MongoDB client: %v", err)
+		return nil, err
 	}
 
-	pingCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
+	// lc.Append is a hook that registers a function to be executed on shutdown.
+	// This is the idiomatic way to handle cleanup in FX.
+	lc.Append(fx.Hook{
+		OnStop: func(ctx context.Context) error {
+			dbError := client.Disconnect(ctx)
+			if dbError != nil {
+				log.Fatalf("Failed to disconnect from MongoDB: %v", err)
+			}
+			log.Println("Connection to MongoDB closed. ✅")
+			return dbError
+		},
+	})
 
-	if err = client.Ping(pingCtx, readpref.Primary()); err != nil {
+	// Use a ping to verify the connection is alive.
+	if err = client.Ping(ctx, readpref.Primary()); err != nil {
 		log.Fatalf("FATAL: Could not ping MongoDB: %v", err)
+		return nil, err
 	}
 
 	log.Println("Successfully connected to MongoDB! ✅")
-	return client
-}
-
-// Close gracefully disconnects the client from MongoDB.
-// It's essential to call this on application shutdown.
-func (db *MongoDB) Close(ctx context.Context) {
-	if db.Client == nil {
-		return
-	}
-	if err := db.Client.Disconnect(ctx); err != nil {
-		log.Fatalf("Failed to disconnect from MongoDB: %v", err)
-	}
-	log.Println("Connection to MongoDB closed. ✅")
+	return client, nil
 }
