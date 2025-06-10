@@ -1,6 +1,6 @@
 # Server configuration
 server:
-  port: 8080
+  port: ${SERVER_PORT:2020}
 
 # Database configuration
 database:

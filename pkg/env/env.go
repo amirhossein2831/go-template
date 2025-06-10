@@ -3,8 +3,12 @@ package env
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
+	"strings"
 )
+
+var placeholderRegex = regexp.MustCompile(`\${(.*?)}`)
 
 func GetEnv(key string, defaultValue string) string {
 	val := os.Getenv(key)
@@ -38,4 +42,29 @@ func GetTypeEnv[O string | int | bool | float64](key string, defaultValue O) O {
 	}
 	oValue, _ := value.(O)
 	return oValue
+}
+
+// GetExpandedEnv finds placeholders like ${VAR:default} in a string and replaces them.
+func GetExpandedEnv(value string) string {
+	return placeholderRegex.ReplaceAllStringFunc(value, func(match string) string {
+		parts := placeholderRegex.FindStringSubmatch(match)
+		if len(parts) < 2 {
+			return match
+		}
+
+		content := parts[1]
+		var envVar, defaultValue string
+
+		if colonIndex := strings.Index(content, ":"); colonIndex != -1 {
+			envVar = content[:colonIndex]
+			defaultValue = content[colonIndex+1:]
+		} else {
+			envVar = content
+		}
+
+		if v, exists := os.LookupEnv(envVar); exists {
+			return v
+		}
+		return defaultValue
+	})
 }

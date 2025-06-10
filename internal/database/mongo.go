@@ -22,7 +22,7 @@ func NewMongo(cfg *config.Config, lc fx.Lifecycle) (*mongo.Client, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(cfg.Database.URI))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(cfg.GetEnv(cfg.Database.URI)))
 	if err != nil {
 		log.Fatalf("FATAL: Failed to create MongoDB client: %v", err)
 		return nil, err

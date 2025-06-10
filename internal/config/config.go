@@ -22,7 +22,7 @@ type Config struct {
 
 // ServerConfig	hold the server config
 type ServerConfig struct {
-	Port int `mapstructure:"port"`
+	Port string `mapstructure:"port"`
 }
 
 // DatabaseConfig hold the database config
@@ -60,4 +60,8 @@ func NewConfig() (*Config, error) {
 
 	log.Println("Configuration loaded successfully!")
 	return &config, nil
+}
+
+func (config *Config) GetEnv(key string) string {
+	return env.GetExpandedEnv(key)
 }
