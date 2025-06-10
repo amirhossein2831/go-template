@@ -1,0 +1,47 @@
+services:
+  first-app:
+    container_name: first-app
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    build:
+      context: ./
+      dockerfile: build/docker/Dockerfile
+    environment:
+      APP_NAME: first-app
+      MONGO_URI: mongodb://mongo:27017
+    networks:
+      - app-network
+#    ports:
+#      - "8080:8080"
+
+  second-app:
+    container_name: second-app
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: build/docker/Dockerfile
+    environment:
+      APP_NAME: second-app
+    networks:
+      - app-network
+#    ports:
+#      - "8081:8081"
+
+  # The MongoDB Service
+  mongo:
+    image: mongo:latest # Use the official Mongo image
+    ports:
+      # Expose the port to your host machine for tools like MongoDB Compass
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db # Persist database data on your host machine
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
