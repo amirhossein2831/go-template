@@ -1,9 +1,17 @@
 package config
 
 import (
+	"event-collector/pkg/env"
 	"github.com/spf13/viper"
 	"log"
 )
+
+var profileConfigFileMap = map[string]string{
+	"local":       "application",
+	"development": "application-development",
+	"production":  "application-production",
+	"test":        "application-test",
+}
 
 // Config struct holds all configuration for the application.
 // The tags `mapstructure:"..."` are used by Viper to unmarshal the data.
@@ -25,10 +33,15 @@ type DatabaseConfig struct {
 // NewConfig loads configuration from file and environment, returning a singleton instance.
 // TODO: load base on active profile
 func NewConfig() (*Config, error) {
-	viper.SetConfigName("application") // Name of config file (without extension)
-	viper.SetConfigType("yml")         // REQUIRED if the config file does not have the extension in the name
-	viper.AddConfigPath("./configs")   // Path to look for the config file in
-	viper.AutomaticEnv()               // Read in environment variables that match
+	// read the active profile
+	activeProfile := env.GetEnv("ACTIVE_PROFILE", "local")
+	configDir := profileConfigFileMap[activeProfile]
+	log.Println(configDir)
+
+	viper.SetConfigName(configDir)   // Name of config file (without extension)
+	viper.SetConfigType("yml")       // REQUIRED if the config file does not have the extension in the name
+	viper.AddConfigPath("./configs") // Path to look for the config file in
+	viper.AutomaticEnv()             // Read in environment variables that match
 
 	// ---> SET DEFAULTS HERE <---
 	// Use dot notation for nested keys
