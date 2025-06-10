@@ -9,7 +9,7 @@ services:
       dockerfile: build/docker/Dockerfile
     environment:
       APP_NAME: first-app
-      ACTIVE_PROFILE: development
+      APP_ENV: development
       MONGO_URI: mongodb://mongo:27017
     networks:
       - app-network
@@ -24,7 +24,7 @@ services:
       dockerfile: build/docker/Dockerfile
     environment:
       APP_NAME: second-app
-      ACTIVE_PROFILE: development
+      APP_ENV: development
     networks:
       - app-network
 #    ports:

@@ -31,11 +31,10 @@ type DatabaseConfig struct {
 }
 
 // NewConfig loads configuration from file and environment, returning a singleton instance.
-// TODO: load base on active profile
 func NewConfig() (*Config, error) {
-	// read the active profile
-	activeProfile := env.GetEnv("ACTIVE_PROFILE", "local")
-	configDir := profileConfigFileMap[activeProfile]
+	// read app env
+	appEnv := env.GetEnv("APP_ENV", "local")
+	configDir := profileConfigFileMap[appEnv]
 	log.Println(configDir)
 
 	viper.SetConfigName(configDir)   // Name of config file (without extension)
