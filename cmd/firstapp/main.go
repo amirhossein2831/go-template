@@ -40,10 +40,15 @@ func main() {
 		// Invoke is used for functions that are needed for their side effects,
 		// but don't provide any new types. This is our main application logic.
 		fx.Invoke(
+			// Instantiate http server and register routes
 			func(*fiber.App) {},
 			route.RegisterRoutes,
+
+			// Instantiate grpc server and register services
 			func(server *grpc2.Server) {},
 			grpc.RegisterServices,
+
+			// run the app
 			runApplication,
 		),
 	)
