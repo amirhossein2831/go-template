@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package provide.v1;
+
+// The option go_package tells the Go generator where to output the code.
+// We'll place it in a public 'pkg' directory so clients can import it.
+option go_package = "event-collector/pkg/grpc/provide/v1;providev1";
+
+// service
+service GreetingService {
+  rpc SayGreeting(SayGreetingRequest) returns (SayGreetingResponse);
+}
+
+// request
+message SayGreetingRequest {
+  string name = 1;
+}
+
+// response
+message SayGreetingResponse {
+  string greeting_message = 1;
+}
