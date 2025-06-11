@@ -8,6 +8,7 @@ import (
 	handlers2 "event-collector/internal/transport/grpc/handlers"
 	"event-collector/internal/transport/http"
 	"event-collector/internal/transport/http/handlers"
+	"event-collector/internal/transport/http/route"
 	"fmt"
 	"github.com/gofiber/fiber/v3"
 	"go.uber.org/fx"
@@ -38,7 +39,13 @@ func main() {
 		),
 		// Invoke is used for functions that are needed for their side effects,
 		// but don't provide any new types. This is our main application logic.
-		fx.Invoke(func(*fiber.App) {}, func(server *grpc2.Server) {}, grpc.RegisterServices, runApplication),
+		fx.Invoke(
+			func(*fiber.App) {},
+			route.RegisterRoutes,
+			func(server *grpc2.Server) {},
+			grpc.RegisterServices,
+			runApplication,
+		),
 	)
 
 	// Run the application. This call is blocking.
