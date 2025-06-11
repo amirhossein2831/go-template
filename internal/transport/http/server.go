@@ -25,8 +25,8 @@ func NewHTTPServer(lc fx.Lifecycle, cfg *config.Config) *fiber.App {
 		// OnStart is called when the application starts.
 		OnStart: func(ctx context.Context) error {
 			go func() {
-				port := cfg.GetEnv(cfg.Server.Port) // Get port from config
-				host := cfg.GetEnv(cfg.Server.Host) // Get port from config
+				port := cfg.GetEnv(cfg.Server.HTTP.Port)
+				host := cfg.GetEnv(cfg.Server.HTTP.Host)
 				log.Printf("Starting Fiber server on %s:%s", host, port)
 				if err := app.Listen(fmt.Sprintf("%s:%s", host, port)); err != nil {
 					log.Printf("FATAL: Failed to start Fiber server: %v", err)
