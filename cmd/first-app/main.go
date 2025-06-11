@@ -5,6 +5,7 @@ import (
 	"event-collector/internal/database"
 	"event-collector/internal/service"
 	"event-collector/internal/transport/grpc"
+	"event-collector/internal/transport/grpc/handler"
 	"event-collector/internal/transport/http"
 	"fmt"
 	"github.com/gofiber/fiber/v3"
@@ -24,13 +25,16 @@ func main() {
 			// Shared Business Logic Service
 			service.NewGreetingService,
 
-			// Transport Layers (both are provided)
+			// Grpc handlers
+			handler.NewGreetingHandler,
+
+			// HTTP and GRPC Servers
 			http.NewHTTPServer,
 			grpc.NewGRPCServer,
 		),
 		// Invoke is used for functions that are needed for their side effects,
 		// but don't provide any new types. This is our main application logic.
-		fx.Invoke(func(*fiber.App) {}, func(server *grpc2.Server) {}, runApplication),
+		fx.Invoke(func(*fiber.App) {}, func(server *grpc2.Server) {}, grpc.RegisterServices, runApplication),
 	)
 
 	// Run the application. This call is blocking.
