@@ -20,9 +20,20 @@ type Config struct {
 	Database DatabaseConfig `mapstructure:"database"`
 }
 
-// ServerConfig	hold the server config
+// ServerConfig	hold the server config for http and grpc
 type ServerConfig struct {
+	HTTP HTTPServerConfig `mapstructure:"http"`
+	GRPC GRPCServerConfig `mapstructure:"grpc"`
+}
+
+// HTTPServerConfig hold the http server config
+type HTTPServerConfig struct {
 	Host string `mapstructure:"host"`
+	Port string `mapstructure:"port"`
+}
+
+// GRPCServerConfig hold the grpc server config
+type GRPCServerConfig struct {
 	Port string `mapstructure:"port"`
 }
 
