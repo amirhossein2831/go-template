@@ -1,7 +1,10 @@
 # Server configuration
 server:
-  host: ""
-  port: 8000
+  grpc:
+    port: 500051
+  http:
+    host: ""
+    port: 8000
 
 # Database configuration
 database:
