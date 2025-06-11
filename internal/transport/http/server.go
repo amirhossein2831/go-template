@@ -27,7 +27,7 @@ func NewHTTPServer(lc fx.Lifecycle, cfg *config.Config) *fiber.App {
 			go func() {
 				port := cfg.GetEnv(cfg.Server.HTTP.Port)
 				host := cfg.GetEnv(cfg.Server.HTTP.Host)
-				log.Printf("Starting Fiber server on %s:%s", host, port)
+				log.Printf("Starting Fiber server on %s:%s ✅", host, port)
 				if err := app.Listen(fmt.Sprintf("%s:%s", host, port)); err != nil {
 					log.Printf("FATAL: Failed to start Fiber server: %v", err)
 				}

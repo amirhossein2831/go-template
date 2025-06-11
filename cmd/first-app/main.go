@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v3"
 	"go.uber.org/fx"
+	grpc2 "google.golang.org/grpc"
 )
 
 func main() {
@@ -29,7 +30,7 @@ func main() {
 		),
 		// Invoke is used for functions that are needed for their side effects,
 		// but don't provide any new types. This is our main application logic.
-		fx.Invoke(func(*fiber.App) {}, runApplication),
+		fx.Invoke(func(*fiber.App) {}, func(server *grpc2.Server) {}, runApplication),
 	)
 
 	// Run the application. This call is blocking.

@@ -19,7 +19,7 @@ type server struct {
 }
 
 // NewGRPCServer creates and manages the lifecycle of the gRPC server.
-func NewGRPCServer(lc fx.Lifecycle, cfg *config.Config, greetService *service.GreetingService) {
+func NewGRPCServer(lc fx.Lifecycle, cfg *config.Config, greetService *service.GreetingService) *grpc.Server {
 	grpcPort := cfg.GetEnv(cfg.Server.GRPC.Port)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", grpcPort))
 	if err != nil {
@@ -36,16 +36,18 @@ func NewGRPCServer(lc fx.Lifecycle, cfg *config.Config, greetService *service.Gr
 	// Use fx.Lifecycle to handle graceful start and stop.
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
-			log.Printf("Starting gRPC server on port %d", grpcPort)
+			log.Printf("Starting gRPC server on port %s ✅", grpcPort)
 			go s.Serve(lis)
 			return nil
 		},
 		OnStop: func(context.Context) error {
-			log.Println("Gracefully stopping gRPC server...")
+			log.Println("Gracefully stopping gRPC server... ✅")
 			s.GracefulStop()
 			return nil
 		},
 	})
+
+	return s
 }
 
 // SayGreeting is the implementation of our gRPC RPC.
