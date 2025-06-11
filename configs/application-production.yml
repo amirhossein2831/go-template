@@ -1,4 +1,7 @@
 # Server configuration
+app:
+  name: ${APP_NAME:event-collector}
+
 server:
   grpc:
     port: ${GRPC_SERVER_PORT:50051}

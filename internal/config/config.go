@@ -16,8 +16,14 @@ var profileConfigFileMap = map[string]string{
 // Config struct holds all configuration for the application.
 // The tags `mapstructure:"..."` are used by Viper to unmarshal the data.
 type Config struct {
+	APP      APPConfig      `mapstructure:"app"`
 	Server   ServerConfig   `mapstructure:"server"`
 	Database DatabaseConfig `mapstructure:"database"`
+}
+
+// APPConfig hold the app properties
+type APPConfig struct {
+	Name string `mapstructure:"name"`
 }
 
 // ServerConfig	hold the server config for http and grpc
