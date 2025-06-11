@@ -8,11 +8,20 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
+// GreetingHandler implements the http server interface for the GreetingService.
 type GreetingHandler struct {
 	greetingService *services.GreetingService
 }
 
-func (controller *GreetingHandler) List(c fiber.Ctx) error {
+// NewGreetingHandler is the constructor for our http handler.
+func NewGreetingHandler(gs *services.GreetingService) *GreetingHandler {
+	return &GreetingHandler{
+		greetingService: gs,
+	}
+}
+
+// SayGreeting is the implementation for http greeting
+func (controller *GreetingHandler) SayGreeting(c fiber.Ctx) error {
 	ctx := context.Background()
 	req := new(requests.GreetingRequest)
 
