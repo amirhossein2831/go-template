@@ -14,6 +14,7 @@ services:
       - app-network
     ports:
       - "8000:8000"
+      - "50051:50051"
 
   second-app:
     container_name: second-app
@@ -29,14 +30,12 @@ services:
 #    ports:
 #      - "8081:8081"
 
-  # The MongoDB Service
   mongo:
-    image: mongo:latest # Use the official Mongo image
+    image: mongo:latest
     ports:
-      # Expose the port to your host machine for tools like MongoDB Compass
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db # Persist database data on your host machine
+      - mongo-data:/data/db
     networks:
       - app-network
 

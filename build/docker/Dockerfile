@@ -4,6 +4,15 @@ FROM golang:1.24-alpine AS builder
 # Set working directory
 WORKDIR /app
 
+# install proto buf generator
+RUN apk update && \
+    apk add --no-cache \
+    protobuf \
+    protobuf-dev \
+    build-base
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
 # Copy dependency files
 COPY go.mod go.sum ./
 
@@ -12,6 +21,9 @@ RUN go mod download && go mod verify
 
 # Copy source code
 COPY ./ ./
+
+# Generate the Go code from .proto files by running your script.
+RUN chmod +x ./scripts/proto-gen.sh && ./scripts/proto-gen.sh
 
 # Build the application
 # -ldflags="-s -w" reduces binary size by stripping debug info
@@ -28,7 +40,7 @@ WORKDIR /app
 # Copy all binaries from builder
 COPY --from=builder --chown=appuser:appgroup /app/bin/ /app/bin/
 COPY --from=builder --chown=appuser:appgroup /app/configs/ /app/configs/
-COPY --from=builder --chown=appuser:appgroup /app/script/entrypoint.sh /app/
+COPY --from=builder --chown=appuser:appgroup /app/scripts/entrypoint.sh /app/
 
 # add permissions
 RUN chmod +x /app/entrypoint.sh
