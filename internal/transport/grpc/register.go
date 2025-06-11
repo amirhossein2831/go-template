@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-// ServiceParams defines all dependencies needed for registration using an fx.In struct.
+// ServiceParams defines all dependencies needed for registration using a fx.In struct.
 // fx will automatically populate the fields of this struct.
 type ServiceParams struct {
 	fx.In
@@ -26,8 +26,7 @@ func RegisterServices(p ServiceParams, cfg *config.Config) {
 	providev1.RegisterGreetingServiceServer(p.Server, p.GreetingHandler)
 	// e.g., otherv1.RegisterOtherServiceServer(p.Server, p.OtherHandler)
 
-	// Enable gRPC server reflection. This allows tools like grpcurl and Evans
-	// to query the server to discover its available services and methods.
+	// Enable gRPC server reflection. allow query to server and discover available services
 	if needReflection, err := parse.ToPrimary[bool](cfg.GetEnv(cfg.Server.GRPC.Reflection)); err == nil && needReflection {
 		reflection.Register(p.Server)
 	}
