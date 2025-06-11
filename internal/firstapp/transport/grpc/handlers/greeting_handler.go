@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	"event-collector/internal/services"
+	"event-collector/internal/firstapp/services"
 	providev1 "event-collector/pkg/grpc/provide/v1"
 	"log"
 )

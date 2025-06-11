@@ -1,7 +1,7 @@
 package route
 
 import (
-	"event-collector/internal/transport/http/handlers"
+	"event-collector/internal/firstapp/transport/http/handlers"
 	"github.com/gofiber/fiber/v3"
 	"go.uber.org/fx"
 )

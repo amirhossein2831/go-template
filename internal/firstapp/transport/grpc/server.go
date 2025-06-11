@@ -2,7 +2,7 @@ package grpc
 
 import (
 	"context"
-	"event-collector/internal/config"
+	"event-collector/internal/firstapp/config"
 	"fmt"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"

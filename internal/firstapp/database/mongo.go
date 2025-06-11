@@ -2,7 +2,7 @@ package database
 
 import (
 	"context"
-	"event-collector/internal/config"
+	"event-collector/internal/firstapp/config"
 	"go.uber.org/fx"
 	"log"
 	"time"

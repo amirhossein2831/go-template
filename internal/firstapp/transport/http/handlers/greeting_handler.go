@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"context"
-	"event-collector/internal/services"
-	"event-collector/internal/transport/http/requests"
+	"event-collector/internal/firstapp/services"
+	"event-collector/internal/firstapp/transport/http/requests"
 	"event-collector/pkg/validation"
 	"github.com/gofiber/fiber/v3"
 )

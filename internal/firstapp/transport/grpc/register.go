@@ -1,8 +1,8 @@
 package grpc
 
 import (
-	"event-collector/internal/config"
-	"event-collector/internal/transport/grpc/handlers"
+	"event-collector/internal/firstapp/config"
+	"event-collector/internal/firstapp/transport/grpc/handlers"
 	providev1 "event-collector/pkg/grpc/provide/v1"
 	"event-collector/pkg/parse"
 	"go.uber.org/fx"

@@ -1,11 +1,9 @@
 package main
 
 import (
-	"event-collector/internal/greeting"
-	"fmt"
+	greeting2 "event-collector/internal/secondapp/greeting"
 )
 
 func main() {
-	message := greeting.Hello("second app")
-	fmt.Println(message)
+	greeting2.Greeting()
 }

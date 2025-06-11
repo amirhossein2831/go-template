@@ -1,14 +1,14 @@
 package main
 
 import (
-	"event-collector/internal/config"
-	"event-collector/internal/database"
-	"event-collector/internal/services"
-	"event-collector/internal/transport/grpc"
-	handlers2 "event-collector/internal/transport/grpc/handlers"
-	"event-collector/internal/transport/http"
-	"event-collector/internal/transport/http/handlers"
-	"event-collector/internal/transport/http/route"
+	"event-collector/internal/firstapp/config"
+	"event-collector/internal/firstapp/database"
+	"event-collector/internal/firstapp/services"
+	"event-collector/internal/firstapp/transport/grpc"
+	handlers2 "event-collector/internal/firstapp/transport/grpc/handlers"
+	"event-collector/internal/firstapp/transport/http"
+	"event-collector/internal/firstapp/transport/http/handlers"
+	"event-collector/internal/firstapp/transport/http/route"
 	"fmt"
 	"github.com/gofiber/fiber/v3"
 	"go.uber.org/fx"

@@ -2,7 +2,7 @@ package http
 
 import (
 	"context"
-	"event-collector/internal/config"
+	"event-collector/internal/firstapp/config"
 	"event-collector/pkg/validation"
 	"fmt"
 	"github.com/go-playground/validator/v10"
