@@ -2,7 +2,7 @@ package grpc
 
 import (
 	"event-collector/internal/config"
-	"event-collector/internal/transport/grpc/handler"
+	"event-collector/internal/transport/grpc/handlers"
 	providev1 "event-collector/pkg/grpc/provide/v1"
 	"event-collector/pkg/parse"
 	"go.uber.org/fx"
@@ -15,7 +15,7 @@ import (
 type ServiceParams struct {
 	fx.In
 	Server          *grpc.Server
-	GreetingHandler *handler.GreetingHandler
+	GreetingHandler *handlers.GreetingHandler
 	// As you add more handlers, you simply add new fields here.
 	// e.g., OtherHandler *other.Handler
 }

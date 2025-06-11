@@ -1,8 +1,8 @@
-package handler
+package handlers
 
 import (
 	"context"
-	"event-collector/internal/service"
+	"event-collector/internal/services"
 	providev1 "event-collector/pkg/grpc/provide/v1"
 	"log"
 )
@@ -10,11 +10,11 @@ import (
 // GreetingHandler implements the gRPC server interface for the GreetingService.
 type GreetingHandler struct {
 	providev1.UnimplementedGreetingServiceServer
-	greetingService *service.GreetingService
+	greetingService *services.GreetingService
 }
 
 // NewGreetingHandler is the constructor for our gRPC handler.
-func NewGreetingHandler(gs *service.GreetingService) *GreetingHandler {
+func NewGreetingHandler(gs *services.GreetingService) *GreetingHandler {
 	return &GreetingHandler{
 		greetingService: gs,
 	}

@@ -3,9 +3,9 @@ package main
 import (
 	"event-collector/internal/config"
 	"event-collector/internal/database"
-	"event-collector/internal/service"
+	"event-collector/internal/services"
 	"event-collector/internal/transport/grpc"
-	"event-collector/internal/transport/grpc/handler"
+	"event-collector/internal/transport/grpc/handlers"
 	"event-collector/internal/transport/http"
 	"fmt"
 	"github.com/gofiber/fiber/v3"
@@ -23,10 +23,10 @@ func main() {
 			database.NewMongo,
 
 			// Shared Business Logic Service
-			service.NewGreetingService,
+			services.NewGreetingService,
 
 			// Grpc handlers
-			handler.NewGreetingHandler,
+			handlers.NewGreetingHandler,
 
 			// HTTP and GRPC Servers
 			http.NewHTTPServer,
