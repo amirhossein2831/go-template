@@ -3,6 +3,7 @@ package http
 import (
 	"context"
 	"event-collector/internal/config"
+	"event-collector/internal/transport/http/handlers"
 	"event-collector/pkg/validation"
 	"fmt"
 	"github.com/go-playground/validator/v10"
@@ -14,7 +15,7 @@ import (
 	"log"
 )
 
-func NewHTTPServer(lc fx.Lifecycle, cfg *config.Config) *fiber.App {
+func NewHTTPServer(lc fx.Lifecycle, cfg *config.Config, gh *handlers.GreetingHandler) *fiber.App {
 	// Create a new Fiber app
 	app := fiber.New(fiber.Config{
 		StructValidator: &validation.StructValidator{Validator: validator.New()},
@@ -27,10 +28,7 @@ func NewHTTPServer(lc fx.Lifecycle, cfg *config.Config) *fiber.App {
 	app.Use(logger.New())
 
 	// Define a route for the GET method on the root path '/'
-	app.Get("/", func(c fiber.Ctx) error {
-		// Send a string response to the client
-		return c.SendString("Hello, World 👋!")
-	})
+	app.Post("/greeting", gh.SayGreeting)
 
 	lc.Append(fx.Hook{
 		// OnStart is called when the application starts.

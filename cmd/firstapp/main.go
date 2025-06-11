@@ -5,8 +5,9 @@ import (
 	"event-collector/internal/database"
 	"event-collector/internal/services"
 	"event-collector/internal/transport/grpc"
-	"event-collector/internal/transport/grpc/handlers"
+	handlers2 "event-collector/internal/transport/grpc/handlers"
 	"event-collector/internal/transport/http"
+	"event-collector/internal/transport/http/handlers"
 	"fmt"
 	"github.com/gofiber/fiber/v3"
 	"go.uber.org/fx"
@@ -25,8 +26,11 @@ func main() {
 			// Shared Business Logic Service
 			services.NewGreetingService,
 
-			// Grpc handlers
+			// Http handlers
 			handlers.NewGreetingHandler,
+
+			// Grpc handlers
+			handlers2.NewGreetingHandler,
 
 			// HTTP and GRPC Servers
 			http.NewHTTPServer,
