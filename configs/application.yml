@@ -2,6 +2,7 @@
 server:
   grpc:
     port: 50051
+    reflection: true
   http:
     host: ""
     port: 8000
