@@ -34,7 +34,8 @@ type HTTPServerConfig struct {
 
 // GRPCServerConfig hold the grpc server config
 type GRPCServerConfig struct {
-	Port string `mapstructure:"port"`
+	Port       string `mapstructure:"port"`
+	Reflection string `mapstructure:"reflection"`
 }
 
 // DatabaseConfig hold the database config
