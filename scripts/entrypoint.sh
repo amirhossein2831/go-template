@@ -2,8 +2,7 @@
 set -e
 
 # Default app if APP_NAME not specified
-# TODO: read from env
-DEFAULT_APP="first-app"
+DEFAULT_APP="firstapp"
 
 # Generate path
 APP_NAME="${APP_NAME:-$DEFAULT_APP}"
