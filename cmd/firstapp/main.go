@@ -3,6 +3,7 @@ package main
 import (
 	"event-collector/internal/firstapp/config"
 	"event-collector/internal/firstapp/database"
+	"event-collector/internal/firstapp/logger"
 	"event-collector/internal/firstapp/services"
 	"event-collector/internal/firstapp/transport/grpc"
 	handlers2 "event-collector/internal/firstapp/transport/grpc/handlers"
@@ -22,6 +23,7 @@ func main() {
 		fx.Provide(
 			// Core Components
 			config.NewConfig,
+			logger.NewZapLogger,
 			database.NewMongo,
 
 			// Shared Business Logic Service

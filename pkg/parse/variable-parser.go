@@ -3,6 +3,7 @@ package parse
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 func ToPrimary[T string | int | int64 | float64 | bool](value string) (T, error) {
@@ -38,4 +39,8 @@ func ToPrimary[T string | int | int64 | float64 | bool](value string) (T, error)
 	default:
 		return zero, fmt.Errorf("unsupported type for conversion: %T", zero)
 	}
+}
+
+func ToStringArray(input string) []string {
+	return strings.Split(input, ",")
 }
