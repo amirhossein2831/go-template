@@ -14,9 +14,9 @@ var profileConfigFileMap = map[string]string{
 }
 
 // Config struct holds all configuration for the application.
-// The tags `mapstructure:"..."` are used by Viper to unmarshal the data.
 type Config struct {
 	APP      APPConfig      `mapstructure:"app"`
+	Logger   LoggerConfig   `mapstructure:"logger"`
 	Server   ServerConfig   `mapstructure:"server"`
 	Database DatabaseConfig `mapstructure:"database"`
 }
@@ -24,6 +24,24 @@ type Config struct {
 // APPConfig hold the app properties
 type APPConfig struct {
 	Name string `mapstructure:"name"`
+}
+
+// LoggerConfig	hold the config for logger
+type LoggerConfig struct {
+	Level             string                `mapstructure:"level"`
+	Encoding          string                `mapstructure:"encoding"`
+	Development       string                `mapstructure:"development"`
+	OutputPaths       string                `mapstructure:"outputPaths"`
+	ErrorOutputPaths  string                `mapstructure:"errorOutputPaths"`
+	DisableCaller     string                `mapstructure:"disableCaller"`
+	DisableStacktrace string                `mapstructure:"disableStacktrace"`
+	Sampling          *SamplingLoggerConfig `mapstructure:"sampling"`
+}
+
+// SamplingLoggerConfig	hold the config for sampling of logger
+type SamplingLoggerConfig struct {
+	Initial    string `mapstructure:"initial"`
+	Thereafter string `mapstructure:"thereafter"`
 }
 
 // ServerConfig	hold the server config for http and grpc
@@ -56,10 +74,11 @@ func NewConfig() (*Config, error) {
 	configDir := profileConfigFileMap[appEnv]
 	log.Println(configDir)
 
-	viper.SetConfigName(configDir)   // Name of config file (without extension)
-	viper.SetConfigType("yml")       // REQUIRED if the config file does not have the extension in the name
-	viper.AddConfigPath("./configs") // Path to look for the config file in
-	viper.AutomaticEnv()             // Read in environment variables that match
+	// configure the viper
+	viper.SetConfigName(configDir)
+	viper.SetConfigType("yml")
+	viper.AddConfigPath("./configs")
+	viper.AutomaticEnv()
 
 	// ---> SET DEFAULTS HERE <---
 	// Use dot notation for nested keys
