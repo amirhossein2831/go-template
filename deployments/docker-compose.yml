@@ -5,7 +5,7 @@ services:
     depends_on:
       - mongo
     build:
-      context: ./
+      context: ./..
       dockerfile: build/docker/Dockerfile
     environment:
       APP_NAME: first-app
@@ -20,7 +20,7 @@ services:
     container_name: second-app
     restart: unless-stopped
     build:
-      context: ./
+      context: ./..
       dockerfile: build/docker/Dockerfile
     environment:
       APP_NAME: second-app

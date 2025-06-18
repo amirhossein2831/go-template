@@ -6,14 +6,14 @@ app:
 logger:
   level: ${LOG_LEVEL:debug}  # debug, info, warn, error, dpanic, panic, fatal
   encoding: ${LOG_ENCODING:json} # json or console
-  development: ${LOG_DEVELOPMENT:true}
-  outputPaths: ${LOG_OUTPUT:stdout}
-  errorOutputPaths: ${LOG_ERROR_OUTPUT:stderr}
-  disableCaller: ${LOG_DISABLE_CALLER:false}
+  development: ${LOG_DEVELOPMENT:false}
+  outputPaths: ${LOG_OUTPUT:stdout,logs/app.log}
+  errorOutputPaths: ${LOG_ERROR_OUTPUT:stderr,logs/error.log}
+  disableCaller: ${LOG_DISABLE_CALLER:true}
   disableStacktrace: ${LOG_DISABLE_STACKTRACE:false}
   sampling:
     initial: ${LOG_SAMPLING_INITIAL:100}
-    thereafter: ${LOG_SAMPLING_THERE_AFTER>:100}
+    thereafter: ${LOG_SAMPLING_THERE_AFTER:100}
 
 # Server configuration
 server:
