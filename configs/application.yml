@@ -4,12 +4,12 @@ app:
 
 # Log
 logger:
-  level: "debug"  # debug, info, warn, error, dpanic, panic, fatal
-  encoding: "json" # json or console
-  development: true
-  outputPaths: "stdout,logs/app.log"
-  errorOutputPaths: "stderr,logs/error.log"
-  disableCaller: false
+  level: debug  # debug, info, warn, error, dpanic, panic, fatal
+  encoding: json # json or console
+  development: false
+  outputPaths: stdout,logs/app_.log
+  errorOutputPaths: stderr,logs/error.log
+  disableCaller: true
   disableStacktrace: false
   sampling:
     initial: 100

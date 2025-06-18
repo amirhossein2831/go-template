@@ -27,7 +27,7 @@ type zapLogger struct {
 // NewZapLogger creates a new zap logger with the given configuration.
 func NewZapLogger(cfg *config.Config) (Logger, error) {
 	level := parseLevel(cfg.GetEnv(cfg.Logger.Level))
-	isDevelopment, _ := parse.ToPrimary[bool](cfg.GetEnv(cfg.Logger.Level))
+	isDevelopment, _ := parse.ToPrimary[bool](cfg.GetEnv(cfg.Logger.Development))
 	disableCaller, _ := parse.ToPrimary[bool](cfg.GetEnv(cfg.Logger.DisableCaller))
 	disableStacktrace, _ := parse.ToPrimary[bool](cfg.GetEnv(cfg.Logger.DisableStacktrace))
 	encoding := cfg.GetEnv(cfg.Logger.Encoding)
