@@ -2,6 +2,19 @@
 app:
   name: event-collector
 
+# Log
+logger:
+  level: "debug"  # debug, info, warn, error, dpanic, panic, fatal
+  encoding: "json" # json or console
+  development: true
+  outputPaths: "stdout,logs/app.log"
+  errorOutputPaths: "stderr,logs/error.log"
+  disableCaller: false
+  disableStacktrace: false
+  sampling:
+    initial: 100
+    thereafter: 100
+
 # Server configuration
 server:
   grpc:
