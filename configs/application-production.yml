@@ -27,3 +27,7 @@ server:
 # Database configuration
 database:
   uri: "mongodb://mongo:27017"
+  migrate:
+    path: ${$MONGO_MIGRATION_PATH:./internal/firstapp/database/migrations}   # the path to your migration file start with ./
+    type: ${MONGO_MIGRATE_TYPE:up}
+    step: ${MONGO_MIGRATE_STEPS:1}

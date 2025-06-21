@@ -26,4 +26,8 @@ server:
 
 # Database configuration
 database:
-  uri: "mongodb://localhost:27017"
+  uri: "mongodb://localhost:27017/superappsso"
+  migrate:
+    path: "./internal/firstapp/database/migrations"   # the path to your migration file start with ./
+    type: up
+    step: 2  # if type is step define the step to forward or backward(negative for backward)
