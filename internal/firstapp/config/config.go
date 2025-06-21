@@ -64,7 +64,15 @@ type GRPCServerConfig struct {
 
 // DatabaseConfig hold the database config
 type DatabaseConfig struct {
-	URI string `mapstructure:"uri"`
+	URI     string               `mapstructure:"uri"`
+	Migrate MongoMigrationConfig `mapstructure:"migrate"`
+}
+
+// MongoMigrationConfig hold the database migration config
+type MongoMigrationConfig struct {
+	PATH string `mapstructure:"path"`
+	Type string `mapstructure:"type"`
+	Step string `mapstructure:"step"`
 }
 
 // NewConfig loads configuration from file and environment, returning a singleton instance.

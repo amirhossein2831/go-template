@@ -42,6 +42,9 @@ func main() {
 		// Invoke is used for functions that are needed for their side effects,
 		// but don't provide any new types. This is our main application logic.
 		fx.Invoke(
+			// migrate db
+			database.RunMigration,
+
 			// Instantiate http server and register routes
 			func(*fiber.App) {},
 			route.RegisterRoutes,
