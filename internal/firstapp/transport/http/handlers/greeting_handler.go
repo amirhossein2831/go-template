@@ -26,7 +26,7 @@ func (controller *GreetingHandler) SayGreeting(c fiber.Ctx) error {
 	req := new(requests.GreetingRequest)
 
 	if err := c.Bind().Body(req); err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).JSON(validation.ValidateStruct(req))
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(validation.ValidateStruct(err))
 	}
 
 	res, err := controller.greetingService.GenerateGreetingLogic(ctx, req.Name)
