@@ -14,22 +14,22 @@ import (
 	"event-collector/pkg/logger"
 	"strings"
 
-	"github.com/gofiber/fiber/v3"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
-	grpc2 "google.golang.org/grpc"
 )
 
-func Initialize() {
+func Bootstrap() {
 	serviceMode := env.GetEnv("SERVICE_MODE", "server")
 
 	switch {
 	case strings.EqualFold(serviceMode, string(configs.ServiceModeServer)):
-		InitializeServer()
+		runServer()
+	default:
+		panic("unknown SERVICE_MODE: " + serviceMode)
 	}
 }
 
-func InitializeServer() {
+func runServer() {
 	app := fx.New(
 		fx.WithLogger(func() fxevent.Logger {
 			return fxevent.NopLogger
@@ -49,9 +49,7 @@ func InitializeServer() {
 		fx.Invoke(
 			monitoring.RunMetricsServer,
 			mongo.RunMigration,
-			func(*fiber.App) {},
 			route.RegisterRoutes,
-			func(server *grpc2.Server) {},
 			grpc.RegisterServices,
 		),
 	)
