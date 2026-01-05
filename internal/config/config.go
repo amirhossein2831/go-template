@@ -19,10 +19,11 @@ var profileConfigFileMap = map[string]string{
 
 // Config struct holds all configuration for the application.
 type Config struct {
-	APP      APPConfig      `mapstructure:"app"`
-	Logger   LoggerConfig   `mapstructure:"logger"`
-	Server   ServerConfig   `mapstructure:"server"`
-	Database DatabaseConfig `mapstructure:"database"`
+	APP              APPConfig        `mapstructure:"app"`
+	Logger           LoggerConfig     `mapstructure:"logger"`
+	Server           ServerConfig     `mapstructure:"server"`
+	Database         DatabaseConfig   `mapstructure:"database"`
+	PrometheusConfig PrometheusConfig `mapstructure:"prometheus"`
 }
 
 // APPConfig holds the app properties
@@ -80,6 +81,14 @@ type MongoMigrationConfig struct {
 	Step int    `mapstructure:"step"`
 }
 
+type PrometheusConfig struct {
+	Host          string `mapstructure:"host"`
+	Port          int    `mapstructure:"port"`
+	URL           string `mapstructure:"url"`
+	MetricsPrefix string `mapstructure:"metrics_prefix"`
+	MetricsSuffix string `mapstructure:"metrics_suffix"`
+}
+
 // NewConfig loads configuration from file and environment.
 func NewConfig() (*Config, error) {
 	appEnv := env.GetEnv("APP_ENV", "local")
@@ -106,7 +115,6 @@ func NewConfig() (*Config, error) {
 	v.SetDefault("server.grpc.reflection", false)
 
 	if err := v.ReadInConfig(); err != nil {
-		// If you want config file to be optional, handle viper.ConfigFileNotFoundError here.
 		return nil, fmt.Errorf("failed to read config file %q: %w", configName, err)
 	}
 

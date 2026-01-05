@@ -32,3 +32,10 @@ database:
     path: "./internal/database/mongo/migrations"   # the path to your migration file start with ./
     type: up
     step: 2  # if type is step define the step to forward or backward(negative for backward)
+
+prometheus:
+  host: 0.0.0.0
+  port: 9999
+  url: localhost:9091
+  metrics_prefix: message-go
+  metrics_suffix: message-go

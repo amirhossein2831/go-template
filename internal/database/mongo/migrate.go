@@ -15,7 +15,8 @@ import (
 func RunMigration(cfg *configs.Config, logger logger.Logger) error {
 	m, err := migrate.New("file://"+cfg.Database.Migrate.Path, cfg.Database.URI)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("create migrator failed", zap.Error(err))
+		return err
 	}
 	defer m.Close()
 

@@ -3,14 +3,15 @@ package mongo
 import (
 	"context"
 	"event-collector/internal/config"
-	"log"
+	"fmt"
 	"time"
 
-	"go.uber.org/fx"
+	"log"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"go.uber.org/fx"
 )
 
 // DB holds the client and implements the singleton logic.
@@ -25,28 +26,24 @@ func NewMongo(cfg *configs.Config, lc fx.Lifecycle) (*mongo.Client, error) {
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(cfg.Database.URI))
 	if err != nil {
-		log.Fatalf("FATAL: Failed to create MongoDB client: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("mongo connect failed: %w", err)
 	}
 
-	// lc.Append is a hook that registers a function to be executed on shutdown.
-	// This is the idiomatic way to handle cleanup in FX.
+	// Verify connection
+	if err = client.Ping(ctx, readpref.Primary()); err != nil {
+		return nil, fmt.Errorf("mongo ping failed: %w", err)
+	}
+
 	lc.Append(fx.Hook{
 		OnStop: func(ctx context.Context) error {
-			dbError := client.Disconnect(ctx)
-			if dbError != nil {
-				log.Fatalf("Failed to disconnect from MongoDB: %v", err)
+			if err = client.Disconnect(ctx); err != nil {
+				log.Printf("Failed to disconnect MongoDB err: %v", err)
+				return err
 			}
 			log.Println("Connection to MongoDB closed. ✅")
-			return dbError
+			return nil
 		},
 	})
-
-	// Use a ping to verify the connection is alive.
-	if err = client.Ping(ctx, readpref.Primary()); err != nil {
-		log.Fatalf("FATAL: Could not ping MongoDB: %v", err)
-		return nil, err
-	}
 
 	log.Println("Successfully connected to MongoDB! ✅")
 	return client, nil

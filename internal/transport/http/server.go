@@ -5,6 +5,8 @@ import (
 	configs "event-collector/internal/config"
 	"event-collector/pkg/validation"
 	"fmt"
+	"net"
+
 	"log"
 
 	"github.com/go-playground/validator/v10"
@@ -15,37 +17,37 @@ import (
 	"go.uber.org/fx"
 )
 
-func NewHTTPServer(lc fx.Lifecycle, cfg *configs.Config) *fiber.App {
-	// Create a new Fiber app
+func NewHTTPServer(lc fx.Lifecycle, cfg *configs.Config) (*fiber.App, error) {
 	app := fiber.New(fiber.Config{
 		StructValidator: &validation.StructValidator{Validator: validator.New()},
 		AppName:         cfg.APP.Name,
 	})
 
-	// append middleware here
 	app.Use(recover.New())
 	app.Use(requestid.New())
 	app.Use(logger.New())
 
+	addr := fmt.Sprintf("%s:%d", cfg.Server.HTTP.Host, cfg.Server.HTTP.Port)
+	ln, err := net.Listen("tcp", addr)
+	if err != nil {
+		return nil, fmt.Errorf("http listen failed: %w", err)
+	}
+
 	lc.Append(fx.Hook{
-		// OnStart is called when the application starts.
 		OnStart: func(ctx context.Context) error {
+			log.Printf("Starting Fiber server on %v ✅", addr)
 			go func() {
-				port := cfg.Server.HTTP.Port
-				host := cfg.Server.HTTP.Host
-				log.Printf("Starting Fiber server on %s:%d ✅", host, port)
-				if err := app.Listen(fmt.Sprintf("%s:%d", host, port)); err != nil {
-					log.Printf("FATAL: Failed to start Fiber server: %v", err)
+				if err = app.Listener(ln); err != nil {
+					log.Printf("Fiber server start failed: %v", err)
 				}
 			}()
 			return nil
 		},
-		// OnStop is called when the application is shutting down.
 		OnStop: func(ctx context.Context) error {
 			fmt.Println("Gracefully shutting down Fiber server ✅")
 			return app.Shutdown()
 		},
 	})
 
-	return app
+	return app, nil
 }

@@ -11,20 +11,21 @@ import (
 	"google.golang.org/grpc"
 )
 
-// NewGRPCServer creates and manages the lifecycle of the gRPC server.
-func NewGRPCServer(lc fx.Lifecycle, cfg *configs.Config) *grpc.Server {
+func NewGRPCServer(lc fx.Lifecycle, cfg *configs.Config) (*grpc.Server, error) {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.Server.GRPC.Port))
 	if err != nil {
-		log.Fatalf("Failed to listen for gRPC: %v", err)
+		return nil, fmt.Errorf("grpc listen failed: %w", err)
 	}
 
 	s := grpc.NewServer()
-
-	// Use fx.Lifecycle to handle graceful start and stop.
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
 			log.Printf("Starting gRPC server on port %d ✅", cfg.Server.GRPC.Port)
-			go s.Serve(lis)
+			go func() {
+				if err = s.Serve(lis); err != nil {
+					log.Printf("gRPC server stopped with error %d ✅", cfg.Server.GRPC.Port)
+				}
+			}()
 			return nil
 		},
 		OnStop: func(context.Context) error {
@@ -34,5 +35,5 @@ func NewGRPCServer(lc fx.Lifecycle, cfg *configs.Config) *grpc.Server {
 		},
 	})
 
-	return s
+	return s, nil
 }

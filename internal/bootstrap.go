@@ -3,6 +3,7 @@ package internal
 import (
 	configs "event-collector/internal/config"
 	"event-collector/internal/database/mongo"
+	"event-collector/internal/monitoring"
 	"event-collector/internal/services"
 	"event-collector/internal/transport/grpc"
 	grpcHandler "event-collector/internal/transport/grpc/handlers"
@@ -36,6 +37,7 @@ func InitializeServer() {
 		fx.Provide(
 			configs.NewConfig,
 			logger.NewZapLogger,
+			monitoring.NewMetricsServer,
 			mongo.NewMongo,
 			services.NewGreetingService,
 			handlers.NewGreetingHandler,
@@ -45,6 +47,7 @@ func InitializeServer() {
 		),
 
 		fx.Invoke(
+			monitoring.RunMetricsServer,
 			mongo.RunMigration,
 			func(*fiber.App) {},
 			route.RegisterRoutes,
