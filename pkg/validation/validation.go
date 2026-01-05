@@ -3,8 +3,9 @@ package validation
 import (
 	"errors"
 	"fmt"
-	"github.com/go-playground/validator/v10"
 	"strings"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type StructValidator struct {

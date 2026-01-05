@@ -3,7 +3,6 @@ package internal
 import (
 	configs "event-collector/internal/config"
 	"event-collector/internal/database/mongo"
-	"event-collector/internal/pkg/logger"
 	"event-collector/internal/services"
 	"event-collector/internal/transport/grpc"
 	grpcHandler "event-collector/internal/transport/grpc/handlers"
@@ -11,6 +10,7 @@ import (
 	"event-collector/internal/transport/http/handlers"
 	"event-collector/internal/transport/http/route"
 	"event-collector/pkg/env"
+	"event-collector/pkg/logger"
 	"strings"
 
 	"github.com/gofiber/fiber/v3"

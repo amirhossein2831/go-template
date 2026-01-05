@@ -1,1 +1,0 @@
-code that is private to the outside of internal but shared between app in internal like first and second app

@@ -2,7 +2,7 @@ package services
 
 import (
 	"context"
-	"event-collector/internal/pkg/logger"
+	"event-collector/pkg/logger"
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/mongo"

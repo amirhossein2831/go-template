@@ -3,7 +3,7 @@ package mongo
 import (
 	"errors"
 	"event-collector/internal/config"
-	"event-collector/internal/pkg/logger"
+	"event-collector/pkg/logger"
 	"log"
 
 	"github.com/golang-migrate/migrate/v4"
