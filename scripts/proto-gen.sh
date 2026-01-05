@@ -3,7 +3,7 @@
 set -e # Exit immediately if a command exits with a non-zero status.
 
 # --- Configuration ---
-API_DIR="api/proto"
+API_DIR="proto"
 PKG_DIR="pkg/grpc"
 
 # --- Function to compile protos in a given subdirectory ---

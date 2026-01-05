@@ -1,33 +1,34 @@
 # App configuration
 app:
-  name: ${APP_NAME:event-collector}
+  name: event-collector
+  service_mode: server
 
 # Log
 logger:
-  level: ${LOG_LEVEL:debug}  # debug, info, warn, error, dpanic, panic, fatal
-  encoding: ${LOG_ENCODING:json} # json or console
-  development: ${LOG_DEVELOPMENT:false}
-  outputPaths: ${LOG_OUTPUT:stdout,logs/app.log}
-  errorOutputPaths: ${LOG_ERROR_OUTPUT:stderr,logs/error.log}
-  disableCaller: ${LOG_DISABLE_CALLER:true}
-  disableStacktrace: ${LOG_DISABLE_STACKTRACE:false}
+  level: debug  # debug, info, warn, error, dpanic, panic, fatal
+  encoding: json # json or console
+  development: false
+  outputPaths: stdout,logs/app_.log
+  errorOutputPaths: stderr,logs/error.log
+  disableCaller: true
+  disableStacktrace: false
   sampling:
-    initial: ${LOG_SAMPLING_INITIAL:100}
-    thereafter: ${LOG_SAMPLING_THERE_AFTER:100}
+    initial: 100
+    thereafter: 100
 
 # Server configuration
 server:
   grpc:
-    port: ${GRPC_SERVER_PORT:50051}
-    reflection: ${GRPC_SERVER_REFLECTION:true}
+    port: 50051
+    reflection: true
   http:
-    host: ${HTTP_SERVER_HOST:}
-    port: ${HTTP_SERVER_PORT:8000}
+    host: ""
+    port: 8000
 
 # Database configuration
 database:
-  uri: "mongodb://mongo:27017"
+  uri: "mongodb://mongo:27017/activity-stream-hub"
   migrate:
-    path: ${$MONGO_MIGRATION_PATH:./internal/firstapp/database/migrations}   # the path to your migration file start with ./
-    type: ${MONGO_MIGRATE_TYPE:up}
-    step: ${MONGO_MIGRATE_STEPS:1}
+    path: "./internal/database/migrations"   # the path to your migration file start with ./
+    type: up
+    step: 2  # if type is step define the step to forward or backward(negative for backward)

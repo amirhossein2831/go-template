@@ -1,0 +1,17 @@
+services:
+  first-app:
+    container_name: first-app
+    restart: unless-stopped
+    build:
+      context: .
+    environment:
+      APP_ENV: development
+    networks:
+      - app-network
+    ports:
+      - "8000:8000"
+      - "50051:50051"
+
+networks:
+  app-network:
+    driver: bridge

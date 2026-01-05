@@ -2,3 +2,7 @@ bin
 logs/*
 .idea
 pkg/grpc/**/*.pb.go
+
+logs
+deployments
+docker-compose.yml/

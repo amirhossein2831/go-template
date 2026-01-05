@@ -1,14 +1,15 @@
 # App configuration
 app:
   name: event-collector
+  service_mode: server
 
 # Log
 logger:
   level: debug  # debug, info, warn, error, dpanic, panic, fatal
   encoding: json # json or console
   development: false
-  outputPaths: stdout,logs/app_.log
-  errorOutputPaths: stderr,logs/error.log
+  outputPaths: stdout
+  errorOutputPaths: stderr
   disableCaller: true
   disableStacktrace: false
   sampling:
@@ -26,8 +27,8 @@ server:
 
 # Database configuration
 database:
-  uri: "mongodb://localhost:27017/superappsso"
+  uri: "mongodb://localhost:27017/activity-stream-hub"
   migrate:
-    path: "./internal/firstapp/database/migrations"   # the path to your migration file start with ./
+    path: "./internal/database/migrations"   # the path to your migration file start with ./
     type: up
     step: 2  # if type is step define the step to forward or backward(negative for backward)
