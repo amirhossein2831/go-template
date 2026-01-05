@@ -24,7 +24,7 @@ func Initialize() {
 	serviceMode := env.GetEnv("SERVICE_MODE", "server")
 
 	switch {
-	case strings.EqualFold(serviceMode, string(env.ServiceModeServer)):
+	case strings.EqualFold(serviceMode, string(configs.ServiceModeServer)):
 		InitializeServer()
 	}
 }

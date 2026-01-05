@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 	configs "event-collector/internal/config"
+	"event-collector/internal/transport/grpc/interceptor"
 	"fmt"
 	"log"
 	"net"
@@ -17,7 +18,14 @@ func NewGRPCServer(lc fx.Lifecycle, cfg *configs.Config) (*grpc.Server, error) {
 		return nil, fmt.Errorf("grpc listen failed: %w", err)
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			interceptor.PanicRecoveryInterceptor,
+			interceptor.GrpcResponseTimeMetricInterceptor,
+			interceptor.GrpcStatusMetricsInterceptor,
+		),
+	)
+
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
 			log.Printf("Starting gRPC server on port %d ✅", cfg.Server.GRPC.Port)
