@@ -13,12 +13,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-// MongoDB holds the client and implements the singleton logic.
-type MongoDB struct {
+// DB holds the client and implements the singleton logic.
+type DB struct {
 	Client *mongo.Client
 }
 
-// NewMongo returns a thread-safe, singleton instance of our MongoDB client.
+// NewMongo returns a thread-safe, singleton instance of our DB client.
 func NewMongo(cfg *configs.Config, lc fx.Lifecycle) (*mongo.Client, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
