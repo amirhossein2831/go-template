@@ -29,6 +29,6 @@ server:
 database:
   uri: "mongodb://mongo:27017/activity-stream-hub"
   migrate:
-    path: "./internal/database/migrations"   # the path to your migration file start with ./
+    path: "./internal/database/mongo/migrations"   # the path to your migration file start with ./
     type: up
     step: 2  # if type is step define the step to forward or backward(negative for backward)

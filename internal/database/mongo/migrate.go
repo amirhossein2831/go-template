@@ -1,4 +1,4 @@
-package database
+package mongo
 
 import (
 	"errors"
@@ -37,14 +37,14 @@ func up(m *migrate.Migrate, logger logger.Logger) error {
 	err := m.Up()
 	if err != nil {
 		if errors.Is(err, migrate.ErrNoChange) {
-			logger.Info("Database migration succeeded: nothing to change ✅")
+			log.Printf("Database migration succeeded: nothing to change ✅")
 			return nil
 		}
 		logger.Error("Migrate up failed", zap.Error(err))
 		return err
 	}
 
-	logger.Info("Database migration succeeded ✅")
+	log.Println("Database migration succeeded ✅")
 	return nil
 }
 
@@ -52,14 +52,14 @@ func down(m *migrate.Migrate, logger logger.Logger) error {
 	err := m.Down()
 	if err != nil {
 		if errors.Is(err, migrate.ErrNoChange) {
-			logger.Info("Database migration rolled back succeeded: nothing to change ✅")
+			log.Printf("Database migration rolled back succeeded: nothing to change ✅")
 			return nil
 		}
 		logger.Error("Migrate down failed", zap.Error(err))
 		return err
 	}
 
-	logger.Info("Database migration rolled back successfully ✅")
+	log.Println("Database migration rolled back successfully ✅")
 	return nil
 }
 
@@ -67,7 +67,7 @@ func step(m *migrate.Migrate, logger logger.Logger, steps int) error {
 	err := m.Steps(steps)
 	if err != nil {
 		if errors.Is(err, migrate.ErrNoChange) {
-			logger.Info("Database migration step succeeded: No migrations to apply/rollback ✅")
+			log.Printf("Database migration step succeeded: No migrations to apply/rollback ✅")
 			return nil
 		}
 		logger.Error("Migration step failed", zap.Int("steps", steps), zap.Error(err))
@@ -78,6 +78,7 @@ func step(m *migrate.Migrate, logger logger.Logger, steps int) error {
 	if steps < 0 {
 		direction = "rolled back"
 	}
-	logger.Info("Migration successful ✅", zap.Int("steps", steps), zap.String("direction", direction))
+
+	log.Printf("Migration successful ✅, steps: %v, direction: %v", steps, direction)
 	return nil
 }

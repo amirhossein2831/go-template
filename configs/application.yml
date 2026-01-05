@@ -19,16 +19,16 @@ logger:
 # Server configuration
 server:
   grpc:
-    port: 50051
+    port: 50052
     reflection: true
   http:
     host: ""
-    port: 8000
+    port: 8001
 
 # Database configuration
 database:
   uri: "mongodb://localhost:27017/activity-stream-hub"
   migrate:
-    path: "./internal/database/migrations"   # the path to your migration file start with ./
+    path: "./internal/database/mongo/migrations"   # the path to your migration file start with ./
     type: up
     step: 2  # if type is step define the step to forward or backward(negative for backward)
