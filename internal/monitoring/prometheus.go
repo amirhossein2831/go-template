@@ -14,7 +14,7 @@ import (
 	"go.uber.org/fx"
 )
 
-func NewPrometheusServer(cfg *configs.Config) *http.Server {
+func NewPrometheus(cfg *configs.Config) *http.Server {
 	addr := fmt.Sprintf("%s:%d", cfg.PrometheusConfig.Host, cfg.PrometheusConfig.Port)
 
 	mux := http.NewServeMux()
@@ -26,7 +26,7 @@ func NewPrometheusServer(cfg *configs.Config) *http.Server {
 	}
 }
 
-func RunPrometheusServer(lc fx.Lifecycle, srv *http.Server) {
+func RunPrometheus(lc fx.Lifecycle, srv *http.Server) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			log.Printf("Prometheus metrics endpoint started: %v, path: /metrics", srv.Addr)
