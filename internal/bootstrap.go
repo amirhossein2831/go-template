@@ -37,7 +37,7 @@ func runServer() {
 		fx.Provide(
 			configs.NewConfig,
 			logger.NewZapLogger,
-			monitoring.NewMetricsServer,
+			monitoring.NewPrometheusServer,
 			mongo.NewMongo,
 			services.NewGreetingService,
 			handlers.NewGreetingHandler,
@@ -47,7 +47,7 @@ func runServer() {
 		),
 
 		fx.Invoke(
-			monitoring.RunMetricsServer,
+			monitoring.RunPrometheusServer,
 			mongo.RunMigration,
 			route.RegisterRoutes,
 			grpc.RegisterServices,
