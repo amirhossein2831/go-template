@@ -37,7 +37,7 @@ func NewHTTPServer(lc fx.Lifecycle, cfg *configs.Config) (*fiber.App, error) {
 		OnStart: func(ctx context.Context) error {
 			log.Printf("Starting Fiber server on %v ✅", addr)
 			go func() {
-				if err = app.Listener(ln); err != nil {
+				if err := app.Listener(ln); err != nil {
 					log.Printf("Fiber server start failed: %v", err)
 				}
 			}()
