@@ -45,7 +45,9 @@ func NewHTTPServer(lc fx.Lifecycle, cfg *configs.Config) (*fiber.App, error) {
 		},
 		OnStop: func(ctx context.Context) error {
 			fmt.Println("Gracefully shutting down Fiber server ✅")
-			return app.Shutdown()
+			app.Shutdown()
+			ln.Close()
+			return nil
 		},
 	})
 

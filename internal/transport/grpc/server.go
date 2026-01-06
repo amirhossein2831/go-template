@@ -30,8 +30,8 @@ func NewGRPCServer(lc fx.Lifecycle, cfg *configs.Config) (*grpc.Server, error) {
 		OnStart: func(context.Context) error {
 			log.Printf("Starting gRPC server on port %d ✅", cfg.Server.GRPC.Port)
 			go func() {
-				if err = s.Serve(lis); err != nil {
-					log.Printf("gRPC server stopped with error %d ✅", cfg.Server.GRPC.Port)
+				if err := s.Serve(lis); err != nil {
+					log.Printf("gRPC server start failed: %v", err)
 				}
 			}()
 			return nil
@@ -39,6 +39,7 @@ func NewGRPCServer(lc fx.Lifecycle, cfg *configs.Config) (*grpc.Server, error) {
 		OnStop: func(context.Context) error {
 			log.Println("Gracefully stopping gRPC server... ✅")
 			s.GracefulStop()
+			lis.Close()
 			return nil
 		},
 	})
