@@ -13,7 +13,7 @@ import (
 )
 
 func NewGRPCServer(lc fx.Lifecycle, cfg *configs.Config) (*grpc.Server, error) {
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.Server.GRPC.Port))
+	lis, err := net.Listen("tcp", fmt.Sprintf("[::]:%d", cfg.Server.GRPC.Port))
 	if err != nil {
 		return nil, fmt.Errorf("grpc listen failed: %w", err)
 	}
